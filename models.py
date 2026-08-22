@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 import enum
 from database import Base
+from sqlalchemy import Enum
+
 
 class User_role(str, enum.Enum):
     teacher = "teacher"
@@ -18,6 +20,8 @@ class User(Base):
     role = Column(Enum(User_role), nullable=False)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    
+    children = relationship("Student", back_populates="parent", foreign_keys="Student.parent_id")
 class Student(Base):
     __tablename__= "students"
     
@@ -50,6 +54,6 @@ class BehaviourReport(Base):
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
     type = Column(String, nullable=False)
     description =  Column(String, nullable=True)
-    Behaviour_score = Column(Integer, nullable=False)
+    behaviour_score = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     
