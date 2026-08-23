@@ -1,13 +1,22 @@
 from pydantic import BaseModel
-import datetime as Datetime
+from datetime import date
+
+
 
 
 class UserBase(BaseModel):
-    full_name: str
+    first_name: str
     last_name: str
     role: str
     email: str
-    hashed_password: str
+    
+
+class UserCreate(UserBase):
+    password: str # Basically in here it is the input for plain passwords and it is only used when signing up
+    
+class UserResponse(UserBase):
+    id: int
+
     
 class StudentBase(BaseModel):
     grade:str
@@ -21,7 +30,7 @@ class BehaviourReportBase(BaseModel):
     type: str
     description: str
     behaviour_score: int
-    date: Datetime
+    date: date
     
 class MarksBase(BaseModel):
     student_id: int
@@ -29,4 +38,4 @@ class MarksBase(BaseModel):
     test_name: str
     score: int
     total: int
-    date: Datetime
+    date: date
