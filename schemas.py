@@ -13,7 +13,10 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str # Basically in here it is the input for plain passwords and it is only used when signing up
-    
+
+class LoginRequest(BaseModel):
+    email:str
+    password: str
 class UserResponse(UserBase):
     id: int
 

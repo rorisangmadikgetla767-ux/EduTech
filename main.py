@@ -16,4 +16,43 @@ def get_db():
 @router.post("/users", response_model=schemas.UserResponse)   
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # The magic of hashing every password a user creates, even if my backend could get hacked, passwords are hashed.
-    hashed_password = hashPassword(user.password)   
+    hashed_password = hashPassword(user.password) 
+    new_user = models.User(
+        first_name=user.first_name,
+        last_name=user.lastname,
+        role=user.role,
+        email=user.email,
+        hashed_password=hashPassword
+    )  
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+@router.post("/students", response_model=schemas.StudentBase)
+def create_student(student: schemas.StudentBase, db:Session = Depends(get_db)):
+    new_student = models.Student(
+        grade = student.grade,
+        first_name = student.first_name,
+        last_name = student.last_name,
+        parent_id = student.parent_id,
+        teacher_id = student.teacher_id
+    )
+    db.add(new_student)
+    db.commit()
+    db.refresh(new_student)
+    return new_student
+@router.post("/marks", response_model=schemas.MarksBase)
+def add_marks(marks: schemas.MarksBase, db:Session = Depends(get_db)):
+    new_marks = models.Marks(
+        student_id = marks.student_id,
+        subject = marks.subject,
+        test_name = marks.test_name,
+        score = marks.score,
+        total = marks.total,
+        date = marks.date           
+    )
+    db.add(new_marks)
+    db.commit()
+    db.refresh(new_marks)
+    return new_marks
