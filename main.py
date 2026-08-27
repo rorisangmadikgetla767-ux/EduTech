@@ -56,3 +56,21 @@ def add_marks(marks: schemas.MarksBase, db:Session = Depends(get_db)):
     db.commit()
     db.refresh(new_marks)
     return new_marks
+
+# This is the log-in endpoint
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+import models, schemas
+from Authentication import verify_password, create_access_token
+
+@router.post("/login")
+def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == credentials.email).first()
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email / Invalid password"
+        )
+        
+    
