@@ -80,5 +80,5 @@ def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
         )
         
     
-    accessToken = create_access_token(data={"sub": user.email})
-    return {"access_token": accessToken, "token_type": "bearer"}
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
