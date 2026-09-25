@@ -8,9 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+#On allow origins I am still yet to put the frontend URL
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[''],
+    allow_origins=[""],
     allow_credentials =True,
     allow_methods =["*"],
     allow_headers=["*"],
