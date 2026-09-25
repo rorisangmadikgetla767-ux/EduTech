@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import SessionLocal
 import models, schemas 
-from Authentication import hashPassword
+from Authentication import hash_password
+from database import engine
+
+models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 
@@ -16,13 +19,14 @@ def get_db():
 @router.post("/users", response_model=schemas.UserResponse)   
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # The magic of hashing every password a user creates, even if my backend could get hacked, passwords are hashed.
-    hashed_password = hashPassword(user.password) 
+    
+    hashed_password = hash_password(user.password)
     new_user = models.User(
         first_name=user.first_name,
-        last_name=user.lastname,
+        last_name=user.last_name,
         role=user.role,
         email=user.email,
-        hashed_password=hashPassword
+        hashed_password=hashed_password
     )  
     db.add(new_user)
     db.commit()
@@ -82,3 +86,7 @@ def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
     
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
+
+from fastapi import FastAPI
+app = FastAPI()
+app.include_router(router)
