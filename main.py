@@ -1,9 +1,20 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 from database import SessionLocal
 import models, schemas 
 from Authentication import hash_password
 from database import engine
+from fastapi.middleware.cors import CORSMiddleware
+
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[''],
+    allow_credentials =True,
+    allow_methods =["*"],
+    allow_headers=["*"],
+)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -87,6 +98,6 @@ def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
-from fastapi import FastAPI
-app = FastAPI()
+
+
 app.include_router(router)
