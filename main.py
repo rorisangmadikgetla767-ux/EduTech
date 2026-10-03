@@ -103,5 +103,17 @@ def login(credentials: schemas.LoginRequest, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-
+@router.post("/login/parent")
+def login_parent(credentials: schemas.LoginReq, db: Session = Depends(get_db)):
+    student = db.query(models.Student).filter(models.Student.student_number == credentials.student_number).first()
+    
+    if not student:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid student number / password")
+    parent = db.query(models.User).filter(models.User.id == student.parent_id).first()
+    
+    if not parent or not verify_password(credentials.password, parent.hashed_password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Student Number / Password")
+    
+    access_token = create_access_token(data={"sub": parent.email})
+    return{"access_token": access_token, "token_type": "bearer"}
 app.include_router(router)

@@ -30,7 +30,7 @@ class Student(Base):
     # Already every studnt will be assigned a grade, I just have to filter it to e.g. grade 12b, grade 12 A
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    
+    student_number = Column(String, unique=True, nullable=False)
     parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     teacher_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
@@ -56,4 +56,5 @@ class BehaviourReport(Base):
     description =  Column(String, nullable=True)
     behaviour_score = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
+    
     
