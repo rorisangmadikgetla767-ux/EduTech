@@ -22,11 +22,12 @@ class UserResponse(UserBase):
 
     
 class StudentBase(BaseModel):
-    grade: str
+    grade: int
     first_name: str
     last_name: str
     parent_id: int
     teacher_id: int
+    student_number : int
     
 class BehaviourReportBase(BaseModel):
     student_id: int

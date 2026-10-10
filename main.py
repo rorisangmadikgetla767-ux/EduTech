@@ -14,7 +14,7 @@ app.add_middleware(
     
     
     CORSMiddleware,
-    allow_origins=[""],
+    allow_origins=["http://localhost:5173"],
     allow_credentials =True,
     allow_methods =["*"],
     allow_headers=["*"],
@@ -55,7 +55,8 @@ def create_student(student: schemas.StudentBase, db:Session = Depends(get_db)):
         first_name = student.first_name,
         last_name = student.last_name,
         parent_id = student.parent_id,
-        teacher_id = student.teacher_id
+        teacher_id = student.teacher_id,
+        student_number = student.student_number
     )
     db.add(new_student)
     db.commit()
