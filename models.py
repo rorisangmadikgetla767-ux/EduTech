@@ -57,4 +57,21 @@ class BehaviourReport(Base):
     behaviour_score = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     
+class InterventionRequest(Base):
+    __tablename__ = 'Intervention_Request'
+    
+    id = Column(Integer, primary_key=True, index =True)
+    type = Column(String, nullable=False) 
+    student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    date = Column(Date, nullable=False)
+    
+class Teacher(Base):
+    __tablename__ = 'Teacher-Register'
+    id = Column(Integer, primary_key=True, index=True)
+    teacher_id = Column(Integer, nullable=False)
+    teacher_name = Column(String, nullable=False)
+    teacher_surname = Column(String, nullable=False)
+    Subjects = Column(String, nullable=False)
+    
+    
     

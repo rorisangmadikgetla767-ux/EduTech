@@ -46,3 +46,12 @@ class MarksBase(BaseModel):
 class LoginReq(BaseModel):
     student_number: str
     password: str
+    
+class InterventionReq(BaseModel):
+    type: str
+    student_id : str
+    date: date
+class AddTeacher(BaseModel):
+    Name: str
+    Surname: str
+    Subjects: str

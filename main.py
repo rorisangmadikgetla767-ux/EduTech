@@ -117,4 +117,33 @@ def login_parent(credentials: schemas.LoginReq, db: Session = Depends(get_db)):
     
     access_token = create_access_token(data={"sub": parent.email})
     return{"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/intervene", response_model= schemas.InterventionReq)
+def req_intervention(credentials: schemas.InterventionReq, db: Session = Depends(get_db)):
+    add_request = models.InterventionRequest(
+        type = credentials.type,
+        student_id = credentials.student_id,
+        marks = credentials.date
+    )
+        
+    db.add(add_request)
+    db.commit()
+    db.refresh(add_request)
+    
+    return add_request
+        
+@router.post("/Register_Teacher", response_model=schemas.AddTeacher)
+def add_teacher(credentials: schemas.AddTeacher, db: Session = Depends(get_db)):
+    add_teach = models.Teacher(
+        name = credentials.Name,
+        surname = credentials.Surname,
+        subjects = credentials.Subjects
+    )
+    
+    db.add(add_teach)
+    db.commit()
+    db.refresh(add_teach)
+    return add_teach
+        
+    
 app.include_router(router)
