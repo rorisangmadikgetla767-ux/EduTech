@@ -52,6 +52,7 @@ class InterventionReq(BaseModel):
     student_id : str
     date: date
 class AddTeacher(BaseModel):
-    Name: str
-    Surname: str
-    Subjects: str
+    id: int
+    name: str
+    surname: str
+    subjects: str

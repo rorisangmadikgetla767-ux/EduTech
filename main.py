@@ -132,12 +132,14 @@ def req_intervention(credentials: schemas.InterventionReq, db: Session = Depends
     
     return add_request
         
-@router.post("/Register_Teacher", response_model=schemas.AddTeacher)
-def add_teacher(credentials: schemas.AddTeacher, db: Session = Depends(get_db)):
+@router.post("/teachers", response_model=schemas.AddTeacher)
+def add_teacher(teacher: schemas.AddTeacher, db: Session = Depends(get_db)):
     add_teach = models.Teacher(
-        teacher_name = credentials.Name,
-        teacher_surname = credentials.Surname,
-        subjects = credentials.Subjects
+        
+        id = teacher.id,
+        teacher_name = teacher.name,
+        teacher_surname = teacher.surname,
+        subjects = teacher.subjects
     )
     
     db.add(add_teach)

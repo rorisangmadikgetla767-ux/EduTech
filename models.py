@@ -68,7 +68,6 @@ class InterventionRequest(Base):
 class Teacher(Base):
     __tablename__ = 'teachers'
     id = Column(Integer, ForeignKey("users.id"), primary_key=True, index=True, )
-    teacher_id = Column(Integer, nullable=False)
     teacher_name = Column(String, nullable=False)
     teacher_surname = Column(String, nullable=False)
     subjects = Column(String, nullable=False)
