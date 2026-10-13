@@ -137,15 +137,19 @@ def add_teacher(teacher: schemas.AddTeacher, db: Session = Depends(get_db)):
     add_teach = models.Teacher(
         
         id = teacher.id,
-        teacher_name = teacher.name,
-        teacher_surname = teacher.surname,
+        teacher_name = teacher.teacher_name,
+        teacher_surname = teacher.teacher_surname,
         subjects = teacher.subjects
     )
     
-    db.add(add_teach)
-    db.commit()
-    db.refresh(add_teach)
-    return add_teach
+    try:
+        db.add(add_teach)
+        db.commit()
+        db.refresh(add_teach)
+        return add_teach
+    except Exception:
+        db.rollback()
+        raise
         
     
 app.include_router(router)
